@@ -16,6 +16,8 @@ import javax.persistence.Table;
 @NoArgsConstructor
 public class Category {
 
+    public static String TYPE_NAME = "Категория товара";
+
     @Id
     @Column
     private Integer id;

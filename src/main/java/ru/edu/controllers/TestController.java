@@ -3,7 +3,7 @@ package ru.edu.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.edu.entity.ProductJdbc;
-import ru.edu.entity.ProductJpa;
+import ru.edu.entity.Product;
 import ru.edu.jdbc.ProductJdbcRepository;
 import ru.edu.entity.Category;
 import ru.edu.jpa.CategoryRepository;
@@ -47,13 +47,13 @@ public class TestController {
     }
 
     @GetMapping("/product/list/jpa")
-    public List<ProductJpa> getProducts() {
+    public List<Product> getProducts() {
         return productRepository.findAll();
     }
 
     @PostMapping("/product/add/jpa")
-    public ProductJpa addProduct(@RequestBody ProductJpa productJpa) {
-        return productRepository.save(productJpa);
+    public Product addProduct(@RequestBody Product product) {
+        return productRepository.save(product);
     }
 
     @PostMapping("/product/category/count")
@@ -62,7 +62,7 @@ public class TestController {
     }
 
     @GetMapping("/product/get")
-    public List<ProductJpa> getProductByName(@RequestParam String productName) {
+    public List<Product> getProductByName(@RequestParam String productName) {
         return productRepository.findByName(productName);
     }
 }

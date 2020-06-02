@@ -11,7 +11,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ProductJpa {
+public class Product {
+
+    public static String TYPE_NAME = "Товар";
 
     @Id
     @Column(nullable = false)
@@ -23,11 +25,11 @@ public class ProductJpa {
     private String name;
 
     @OneToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
-    private Category category_id;
+    @JoinColumn(name = "category", referencedColumnName = "id", nullable = false)
+    private Category category;
 
-    public ProductJpa(String name, Category category_id) {
+    public Product(String name, Category category_id) {
         this.name = name;
-        this.category_id = category_id;
+        this.category = category_id;
     }
 }
