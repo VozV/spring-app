@@ -28,8 +28,8 @@ public class Product {
     @JoinColumn(name = "category", referencedColumnName = "id", nullable = false)
     private Category category;
 
-    public Product(String name, Category category_id) {
+    public Product(String name, Category category) {
         this.name = name;
-        this.category = category_id;
+        this.category = category;
     }
 }

@@ -7,12 +7,12 @@ import lombok.Setter;
 @Setter
 public class ProductJdbc {
     private long id;
-    private long category_id;
+    private long category;
     private String name;
 
-    public ProductJdbc(long id, long category_id, String name) {
+    public ProductJdbc(long id, long category, String name) {
         this.id = id;
-        this.category_id = category_id;
+        this.category = category;
         this.name = name;
     }
 }

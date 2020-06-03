@@ -1,71 +1,19 @@
 package ru.edu.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import ru.edu.entity.Category;
-import ru.edu.exсeptions.entity.EntityAlreadyExistsException;
-import ru.edu.exсeptions.entity.EntityHasDetailsException;
-import ru.edu.exсeptions.entity.EntityIllegalArgumentException;
-import ru.edu.exсeptions.entity.EntityNotFoundException;
-import ru.edu.jpa.CategoryRepository;
-import ru.edu.jpa.ProductRepository;
 
 import java.util.List;
 
-@Service
-public class CategoryService {
+public interface CategoryService {
 
-    private final CategoryRepository categoryRepository;
-    private final ProductRepository productRepository;
+    List<Category> findAll();
 
-    @Autowired
-    public CategoryService(CategoryRepository categoryRepository, ProductRepository productRepository) {
-        this.categoryRepository = categoryRepository;
-        this.productRepository = productRepository;
-    }
+    Category findById(Object id);
 
-    public List<Category> findAll() {
-        return categoryRepository.findAll();
-    }
+    Category create(Category category);
 
-    public Category findById(Object id) {
-        if (id == null) {
-            throw new EntityIllegalArgumentException("Ключ объекта не может быть null");
-        }
-        Integer parsedId;
-        try {
-            //костыль, т.к. ((String) id) выкидывает java.lang.ClassCastException
-            parsedId = Integer.valueOf(String.valueOf(id));
-        } catch (NumberFormatException e) {
-            throw new EntityIllegalArgumentException(String.format("Не удалось преобразовать идентификатор к " +
-                    "нужному типу: %s", e));
-        }
-        Category category = categoryRepository.findOne(parsedId);
-        if (category == null) {
-            throw new EntityNotFoundException(Category.TYPE_NAME, parsedId);
-        }
-        return category;
-    }
+    Category update(Category category);
 
-    public Category addCategory(Category category) {
-        if (category == null) {
-            throw new EntityIllegalArgumentException("Объект не может быть null");
-        }
-        if (category.getId() == null) {
-            throw new EntityIllegalArgumentException("Идентефикатор объекта не может быть null");
-        }
-        if (categoryRepository.findOne(category.getId()) != null) {
-            throw new EntityAlreadyExistsException(Category.TYPE_NAME, category.getId());
-        }
-        return categoryRepository.save(category);
-    }
-
-    public void removeCategory(Object id) {
-        Category category = findById(id);
-        if (productRepository.findByCategory(category).size() > 0) {
-            throw new EntityHasDetailsException(Category.TYPE_NAME, category.getId());
-        }
-        categoryRepository.delete(category);
-    }
+    void delete(Object id);
 
 }

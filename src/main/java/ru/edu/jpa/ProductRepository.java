@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
-    @Query (value = "select count (*) from product where category_id = :categoryId", nativeQuery = true)
+    @Query (value = "select count (*) from product where category = :categoryId", nativeQuery = true)
     Integer getCountProductForCategory(@Param("categoryId") long categoryId);
 
     List<Product> findByName(String name);

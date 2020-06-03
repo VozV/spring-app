@@ -22,7 +22,7 @@ public class ProductJdbcRepository {
     }
 
     public List<ProductJdbc> getProducts() {
-        return jdbcTemplate.query("select product.id, product.category_id, product.name from product", (resultSet, i) ->
+        return jdbcTemplate.query("select product.id, product.category, product.name from product", (resultSet, i) ->
                     new ProductJdbc(
                             resultSet.getLong(1),
                             resultSet.getLong(2),
@@ -31,8 +31,8 @@ public class ProductJdbcRepository {
     }
 
     public List<ProductJdbc> getProducts(String categoryName) {
-        return jdbcTemplate.query("select p.id, p.category_id, p.name from product p inner join category c " +
-                "on p.category_id = c.id where c.name = ?", new Object[] { categoryName }, (resultSet, i) ->
+        return jdbcTemplate.query("select p.id, p.category, p.name from product p inner join category c " +
+                "on p.category = c.id where c.name = ?", new Object[] { categoryName }, (resultSet, i) ->
                 new ProductJdbc(
                         resultSet.getLong(1),
                         resultSet.getLong(2),
