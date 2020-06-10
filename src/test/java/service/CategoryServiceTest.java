@@ -13,39 +13,39 @@ import ru.edu.exсeptions.entity.EntityAlreadyExistsException;
 import ru.edu.exсeptions.entity.EntityHasDetailsException;
 import ru.edu.exсeptions.entity.EntityIllegalArgumentException;
 import ru.edu.exсeptions.entity.EntityNotFoundException;
-import ru.edu.service.impl.DefaultCategoryService;
+import ru.edu.service.impl.CategoryService;
 
 import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ContextConfiguration(classes = {TestConfig.class})
-public class DefaultCategoryServiceTest {
+public class CategoryServiceTest {
 
     @Autowired
-    private DefaultCategoryService defaultCategoryService;
+    private CategoryService categoryService;
 
     @Test
     public void findAllTest() {
-        List<Category> categories = defaultCategoryService.findAll();
+        List<Category> categories = categoryService.findAll();
         Assert.assertEquals(categories.size(), 4);
     }
 
     @Test(expected = EntityIllegalArgumentException.class)
     public void createNullCategoryException() {
-        defaultCategoryService.create(null);
+        categoryService.create(null);
     }
 
     @Test(expected = EntityIllegalArgumentException.class)
     public void createNullIdCategoryException() {
-        defaultCategoryService.create(new Category());
+        categoryService.create(new Category());
     }
 
     @Test(expected = EntityAlreadyExistsException.class)
     public void createAlreadyExistsCategoryException() {
         Category category = new Category();
         category.setId(1);
-        defaultCategoryService.create(category);
+        categoryService.create(category);
     }
 
     @Test
@@ -53,47 +53,47 @@ public class DefaultCategoryServiceTest {
         Category category = new Category();
         category.setId(10);
         category.setName("testName");
-        Assert.assertEquals(defaultCategoryService.create(category).getId(), category.getId());
+        Assert.assertEquals(categoryService.create(category).getId(), category.getId());
     }
 
     @Test(expected = EntityIllegalArgumentException.class)
     public void findByIdNullException() {
-        defaultCategoryService.findById(null);
+        categoryService.findById(null);
     }
 
     @Test(expected = EntityIllegalArgumentException.class)
     public void findByIdNoNumericIdException() {
-        defaultCategoryService.findById("vv");
+        categoryService.findById("vv");
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void findByIdNotFoundException() {
-        defaultCategoryService.findById(10);
+        categoryService.findById(10);
     }
 
     @Test
     public void findByIdSuccess() {
-        Category category = defaultCategoryService.findById(2);
+        Category category = categoryService.findById(2);
         Assert.assertEquals((int) category.getId(), 2);
     }
 
     @Test(expected = EntityIllegalArgumentException.class)
     public void deleteNullException() {
-        defaultCategoryService.delete(null);
+        categoryService.delete(null);
     }
 
     @Test(expected = EntityIllegalArgumentException.class)
     public void deleteNoNumericIdException() {
-        defaultCategoryService.delete("vv");
+        categoryService.delete("vv");
     }
 
     @Test(expected = EntityHasDetailsException.class)
     public void deleteNotFoundException() {
-        defaultCategoryService.delete(3);
+        categoryService.delete(3);
     }
 
     @Test
     public void deleteSuccess() {
-        defaultCategoryService.delete(4);
+        categoryService.delete(4);
     }
 }

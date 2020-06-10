@@ -1,12 +1,12 @@
 package service.mock;
 
 import ru.edu.entity.Category;
-import ru.edu.service.CategoryService;
+import ru.edu.service.CrudService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MockCategoryService implements CategoryService {
+public class MockCategoryService implements CrudService<Category> {
     @Override
     public List<Category> findAll() {
         return new ArrayList<>();

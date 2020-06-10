@@ -2,9 +2,12 @@ package ru.edu.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.edu.entity.Product;
-import ru.edu.service.ProductService;
+import ru.edu.service.CrudService;
 
 import java.util.List;
 
@@ -12,10 +15,10 @@ import java.util.List;
 @RequestMapping("api/v1/product")
 public class ProductController {
 
-    private final ProductService productService;
+    private CrudService<Product> productService;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(CrudService<Product> productService) {
         this.productService = productService;
     }
 

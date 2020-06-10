@@ -13,56 +13,56 @@ import ru.edu.entity.Product;
 import ru.edu.exсeptions.entity.EntityAlreadyExistsException;
 import ru.edu.exсeptions.entity.EntityIllegalArgumentException;
 import ru.edu.exсeptions.entity.EntityNotFoundException;
-import ru.edu.service.impl.DefaultCategoryService;
-import ru.edu.service.impl.DefaultProductService;
+import ru.edu.service.impl.CategoryService;
+import ru.edu.service.impl.ProductService;
 
 import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ContextConfiguration(classes = {TestConfig.class})
-public class DefaultProductServiceTest {
+public class ProductServiceTest {
 
     @Autowired
-    private DefaultProductService defaultProductService;
+    private ProductService productService;
     @Autowired
-    private DefaultCategoryService defaultCategoryService;
+    private CategoryService categoryService;
 
     @Test
     public void findAllTest() {
-        List<Product> products = defaultProductService.findAll();
+        List<Product> products = productService.findAll();
         Assert.assertEquals(products.size(), 5);
     }
 
     @Test(expected = EntityIllegalArgumentException.class)
     public void findByIdNullException() {
-        defaultProductService.findById(null);
+        productService.findById(null);
     }
 
     @Test(expected = EntityIllegalArgumentException.class)
     public void findByIdNoNumericIdException() {
-        defaultProductService.findById("vv");
+        productService.findById("vv");
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void findByIdNotFoundException() {
-        defaultProductService.findById(10);
+        productService.findById(10);
     }
 
     @Test
     public void findByIdSuccess() {
-        Product product = defaultProductService.findById(2);
+        Product product = productService.findById(2);
         Assert.assertEquals((int) product.getId(), 2);
     }
 
     @Test(expected = EntityIllegalArgumentException.class)
     public void addNullProductException() {
-        defaultProductService.create(null);
+        productService.create(null);
     }
 
     @Test(expected = EntityIllegalArgumentException.class)
     public void addNullIdProductException() {
-        defaultProductService.create(new Product());
+        productService.create(new Product());
     }
 
     @Test(expected = EntityIllegalArgumentException.class)
@@ -70,7 +70,7 @@ public class DefaultProductServiceTest {
         Product product = new Product();
         product.setId(2);
         product.setCategory(null);
-        defaultProductService.create(product);
+        productService.create(product);
     }
 
     @Test(expected = EntityIllegalArgumentException.class)
@@ -78,7 +78,7 @@ public class DefaultProductServiceTest {
         Product product = new Product();
         product.setId(2);
         product.setCategory(new Category());
-        defaultProductService.create(product);
+        productService.create(product);
     }
 
     @Test(expected = EntityNotFoundException.class)
@@ -88,7 +88,7 @@ public class DefaultProductServiceTest {
         Product product = new Product();
         product.setId(2);
         product.setCategory(category);
-        defaultProductService.create(product);
+        productService.create(product);
     }
 
     @Test(expected = EntityAlreadyExistsException.class)
@@ -98,7 +98,7 @@ public class DefaultProductServiceTest {
         Product product = new Product();
         product.setId(2);
         product.setCategory(category);
-        defaultProductService.create(product);
+        productService.create(product);
     }
 
     @Test
@@ -106,7 +106,7 @@ public class DefaultProductServiceTest {
         Category category = new Category();
         category.setId(1);
         Product product = new Product("testName", category);
-        defaultProductService.create(product);
+        productService.create(product);
     }
 
     @Test
@@ -114,28 +114,28 @@ public class DefaultProductServiceTest {
         Category category = new Category();
         category.setId(10);
         category.setName("testName");
-        Assert.assertEquals(defaultCategoryService.create(category).getId(), category.getId());
+        Assert.assertEquals(categoryService.create(category).getId(), category.getId());
     }
 
     @Test(expected = EntityIllegalArgumentException.class)
     public void removeNullException() {
-        defaultProductService.delete(null);
+        productService.delete(null);
     }
 
     @Test(expected = EntityIllegalArgumentException.class)
     public void removeNoNumericIdException() {
-        defaultProductService.delete("vv");
+        productService.delete("vv");
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void removeNotFoundException() {
-        defaultProductService.delete(10);
+        productService.delete(10);
     }
 
     @Test
     public void removeSuccess() {
-        defaultProductService.create(new Product("delTest", defaultCategoryService.findById(4)));
-        defaultProductService.delete(6);
+        productService.create(new Product("delTest", categoryService.findById(4)));
+        productService.delete(6);
     }
 
 

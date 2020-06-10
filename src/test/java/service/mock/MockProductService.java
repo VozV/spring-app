@@ -1,12 +1,12 @@
 package service.mock;
 
 import ru.edu.entity.Product;
-import ru.edu.service.ProductService;
+import ru.edu.service.CrudService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MockProductService implements ProductService {
+public class MockProductService implements CrudService<Product> {
     @Override
     public List<Product> findAll() {
         return new ArrayList<>();
