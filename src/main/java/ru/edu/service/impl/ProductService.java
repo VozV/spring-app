@@ -13,6 +13,7 @@ import ru.edu.service.CrudService;
 import ru.edu.service.Utillity;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Secured("ROLE_USER")
@@ -32,18 +33,18 @@ public class ProductService implements CrudService<Product> {
     }
 
     public Product findById(Object id) {
-        Product product = productRepository.findOne(Utillity.parseId(id));
-        if (product == null) {
+        Optional<Product> product = productRepository.findById(Utillity.parseId(id));
+        if (!product.isPresent()) {
             throw new EntityNotFoundException(Category.TYPE_NAME, id);
         }
-        return product;
+        return product.get();
     }
 
     @Override
     @Secured("ROLE_ADMIN")
     public Product update(Product product) {
         checkProduct(product);
-        if (product.getId() != null && productRepository.findOne(product.getId()) == null) {
+        if (product.getId() != null && !productRepository.findById(product.getId()).isPresent()) {
             throw new EntityAlreadyExistsException(Product.TYPE_NAME, product.getId());
         }
         return productRepository.save(product);
@@ -52,7 +53,7 @@ public class ProductService implements CrudService<Product> {
     @Secured("ROLE_ADMIN")
     public Product create(Product product) {
         checkProduct(product);
-        if (product.getId() != null && productRepository.findOne(product.getId()) != null) {
+        if (product.getId() != null && productRepository.findById(product.getId()).isPresent()) {
             throw new EntityAlreadyExistsException(Product.TYPE_NAME, product.getId());
         }
         return productRepository.save(product);
@@ -74,7 +75,7 @@ public class ProductService implements CrudService<Product> {
         if (product.getCategory().getId() == null) {
             throw new EntityIllegalArgumentException("Id категории не может быть null");
         }
-        if (categoryRepository.findOne(product.getCategory().getId()) == null) {
+        if (!categoryRepository.findById(product.getCategory().getId()).isPresent()) {
             throw new EntityNotFoundException(Category.TYPE_NAME, product.getCategory().getId());
         }
     }

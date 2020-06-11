@@ -14,6 +14,7 @@ import ru.edu.service.CrudService;
 import ru.edu.service.Utillity;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Secured("ROLE_USER")
@@ -33,18 +34,18 @@ public class CategoryService implements CrudService<Category> {
     }
 
     public Category findById(Object id) {
-        Category category = categoryRepository.findOne(Utillity.parseId(id));
-        if (category == null) {
+        Optional<Category> category = categoryRepository.findById(Utillity.parseId(id));
+        if (!category.isPresent()) {
             throw new EntityNotFoundException(Category.TYPE_NAME, id);
         }
-        return category;
+        return category.get();
     }
 
     @Override
     @Secured("ROLE_ADMIN")
     public Category create(Category category) {
         checkCategory(category);
-        if (categoryRepository.findOne(category.getId()) != null) {
+        if (categoryRepository.findById(category.getId()).isPresent()) {
             throw new EntityAlreadyExistsException(Category.TYPE_NAME, category.getId());
         }
         return categoryRepository.save(category);
@@ -54,7 +55,7 @@ public class CategoryService implements CrudService<Category> {
     @Secured("ROLE_ADMIN")
     public Category update(Category category) {
         checkCategory(category);
-        if (categoryRepository.findOne(category.getId()) == null) {
+        if (!categoryRepository.findById(category.getId()).isPresent()) {
             throw new EntityNotFoundException(Category.TYPE_NAME, category.getId());
         }
         return categoryRepository.save(category);

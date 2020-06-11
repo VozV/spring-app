@@ -27,7 +27,7 @@ public class CategoryRepositoryTest {
     public void addCategoryTest() {
         Category category = new Category(5,"testCategory");
         categoryRepository.save(category);
-        Assert.assertNotNull(categoryRepository.findOne(5));
+        Assert.assertNotNull(categoryRepository.findById(5));
     }
 
     @Test
@@ -38,7 +38,7 @@ public class CategoryRepositoryTest {
 
     @After
     public void delCategoryTest() {
-        categoryRepository.delete(5);
-        Assert.assertNull(categoryRepository.findOne(5));
+        categoryRepository.deleteById(5);
+        Assert.assertNull(categoryRepository.findById(5));
     }
 }

@@ -17,6 +17,7 @@ import ru.edu.service.Utillity;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SecurityUserService implements UserService {
@@ -39,11 +40,11 @@ public class SecurityUserService implements UserService {
 
     @Override
     public User findById(Object id) {
-        User user = userRepository.findOne(Utillity.parseId(id));
-        if (user == null) {
+        Optional<User> user = userRepository.findById(Utillity.parseId(id));
+        if (!user.isPresent()) {
             throw new EntityNotFoundException(Category.TYPE_NAME, id);
         }
-        return user;
+        return user.get();
     }
 
     @Override
